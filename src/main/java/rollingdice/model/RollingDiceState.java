@@ -1,9 +1,17 @@
 package rollingdice.model;
 
+import puzzle.State;
+
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Represents the states of the rolling dice puzzle.
  */
-public class RollingDiceState {
+public class RollingDiceState implements State<Direction> {
 
     /**
      * Represents the game board. Empty squares are represented by 0s.
@@ -26,5 +34,72 @@ public class RollingDiceState {
      * The number of columns in the game board.
      */
     public static final int COLS = BOARD[0].length;
+
+    private Position dicePosition;
+
+    public RollingDiceState() {
+        dicePosition = new Position(0, 0);
+    }
+
+    @Override
+    public boolean isSolved() {
+        return dicePosition.row() == ROWS - 1 && dicePosition.col() == COLS - 1;
+    }
+
+    @Override
+    public boolean isLegalMove(Direction direction) {
+        var newDicePosition = dicePosition.move(direction);
+        return isOnBoard(newDicePosition);
+    }
+
+    @Override
+    public void makeMove(Direction direction) {
+        dicePosition = dicePosition.move(direction);
+    }
+
+    /**
+     * {@return the set of all moves that can be applied to the state}
+     */
+    @Override
+    public Set<Direction> getLegalMoves() {
+        return Arrays.stream(Direction.values())
+                .filter(this::isLegalMove)
+                .collect(Collectors.toCollection(() -> EnumSet.noneOf(Direction.class)));
+    }
+
+    private boolean isOnBoard(Position position) {
+        return 0 <= position.row() && position.row() < ROWS
+                && 0 <= position.col() && position.col() < COLS;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return (o instanceof RollingDiceState that)
+                && Objects.equals(dicePosition, that.dicePosition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dicePosition);
+    }
+
+    @Override
+    public RollingDiceState clone() {
+        RollingDiceState copy;
+        try {
+            copy = (RollingDiceState) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+        return copy;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("RollingDiceState[dicePosition=%s]", dicePosition);
+    }
 
 }
