@@ -35,9 +35,11 @@ public class RollingDiceState implements State<Direction> {
      */
     public static final int COLS = BOARD[0].length;
 
+    private Dice dice;
     private Position dicePosition;
 
     public RollingDiceState() {
+        dice = new Dice();
         dicePosition = new Position(0, 0);
     }
 
@@ -49,11 +51,13 @@ public class RollingDiceState implements State<Direction> {
     @Override
     public boolean isLegalMove(Direction direction) {
         var newDicePosition = dicePosition.move(direction);
-        return isOnBoard(newDicePosition);
+        return isOnBoard(newDicePosition)
+                && (getBoardValue(newDicePosition) == dice.getValue(Dice.Side.TOP) || getBoardValue(newDicePosition) == 0);
     }
 
     @Override
     public void makeMove(Direction direction) {
+        dice.roll(direction);
         dicePosition = dicePosition.move(direction);
     }
 
@@ -72,18 +76,23 @@ public class RollingDiceState implements State<Direction> {
                 && 0 <= position.col() && position.col() < COLS;
     }
 
+    private int getBoardValue(Position position) {
+        return BOARD[position.row()][position.col()];
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         return (o instanceof RollingDiceState that)
+                && (dice.equals(that.dice))
                 && Objects.equals(dicePosition, that.dicePosition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(dicePosition);
+        return Objects.hash(dice, dicePosition);
     }
 
     @Override
@@ -94,12 +103,13 @@ public class RollingDiceState implements State<Direction> {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+        copy.dice = dice.clone();
         return copy;
     }
 
     @Override
     public String toString() {
-        return String.format("RollingDiceState[dicePosition=%s]", dicePosition);
+        return String.format("RollingDiceState[dice=%s,dicePosition=%s]", dice, dicePosition);
     }
 
 }
