@@ -38,16 +38,29 @@ public class RollingDiceState implements State<Direction> {
     private Dice dice;
     private Position dicePosition;
 
+    /**
+     * Creates a {@code RollingDiceState} object that represents the initial
+     * state of the puzzle specified in the assignment.
+     */
     public RollingDiceState() {
         dice = new Dice();
         dicePosition = new Position(0, 0);
     }
 
+    /**
+     * {@return whether the puzzle is solved}
+     */
     @Override
     public boolean isSolved() {
         return dicePosition.row() == ROWS - 1 && dicePosition.col() == COLS - 1;
     }
 
+    /**
+     * {@return whether is it possible to roll the dice in the direction
+     * specified}
+     *
+     * @param direction the direction in which the dice is rolled
+     */
     @Override
     public boolean isLegalMove(Direction direction) {
         var newDicePosition = dicePosition.move(direction);
@@ -55,6 +68,11 @@ public class RollingDiceState implements State<Direction> {
                 && (getBoardValue(newDicePosition) == dice.getValue(Dice.Side.TOP) || getBoardValue(newDicePosition) == 0);
     }
 
+    /**
+     * Rolls the dice in the direction specified.
+     *
+     * @param direction the direction in which the dice is rolled
+     */
     @Override
     public void makeMove(Direction direction) {
         dice.roll(direction);

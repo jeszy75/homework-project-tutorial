@@ -2,8 +2,14 @@ package rollingdice.model;
 
 import java.util.Objects;
 
+/**
+ * Represents a traditional dice with six sides.
+ */
 public class Dice implements Cloneable {
 
+    /**
+     * Represents the sides of a dice.
+     */
     public enum Side {
         TOP,
         NORTH,
@@ -17,10 +23,16 @@ public class Dice implements Cloneable {
     private int north;
     private int west;
 
+    /**
+     * Creates a {@code Dice} object with 6, 3, and 2 on the top, north, and west sides, respectively.
+     */
     public Dice() {
         this(6, 3, 2);
     }
 
+    /**
+     * Creates a {@code Dice} object with the numbers given on the top, north, and west sides, respectively.
+     */
     public Dice(int top, int north, int west) {
         checkSides(top, north, west);
         this.top = top;
@@ -40,6 +52,11 @@ public class Dice implements Cloneable {
         return 1 <= value && value <= 6;
     }
 
+    /**
+     * {@return the number on the side specified}
+     *
+     * @param side a side of the dice
+     */
     public int getValue(Side side) {
         return switch (side) {
             case TOP -> top;
@@ -51,6 +68,11 @@ public class Dice implements Cloneable {
         };
     }
 
+    /**
+     * Rolls the dice in the direction specified.
+     *
+     * @param direction the direction in which the dice is rolled
+     */
     public void roll(Direction direction) {
         switch (direction) {
             case NORTH -> rollNorth();
