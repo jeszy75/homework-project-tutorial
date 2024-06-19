@@ -56,3 +56,33 @@ square. In a move, the dice can be rolled to a neighboring square if the number
 on the top side of the dice equals the number of the target square with the
 following exception: the dice can  always be rolled to an empty square no matter
 which number is on the top side.
+
+## Solution
+
+1. EAST
+1. EAST
+1. SOUTH
+1. EAST
+1. NORTH
+1. EAST
+1. SOUTH
+1. WEST
+1. SOUTH
+1. WEST
+1. WEST
+1. SOUTH
+1. WEST
+1. SOUTH
+1. EAST
+1. SOUTH
+1. EAST
+1. NORTH
+1. NORTH
+1. NORTH
+1. EAST
+1. EAST
+1. SOUTH
+1. WEST
+1. SOUTH
+1. EAST
+1. SOUTH
