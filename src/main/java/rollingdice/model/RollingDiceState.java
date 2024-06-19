@@ -43,8 +43,26 @@ public class RollingDiceState implements State<Direction> {
      * state of the puzzle specified in the assignment.
      */
     public RollingDiceState() {
-        dice = new Dice();
-        dicePosition = new Position(0, 0);
+        this(new Dice(), new Position(0, 0));
+    }
+
+    /**
+     * Creates a {@code RollingDiceState} object with the dice orientation and
+     * position specified.
+     *
+     * @param dice represents the orientation of the dice
+     * @param dicePosition the position of the dice on the game board
+     */
+    public RollingDiceState(Dice dice, Position dicePosition) {
+        checkPosition(dicePosition);
+        this.dice = dice.clone();
+        this.dicePosition = dicePosition;
+    }
+
+    private void checkPosition(Position dicePosition) {
+        if (!isOnBoard(dicePosition)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
