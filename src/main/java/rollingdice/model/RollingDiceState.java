@@ -66,6 +66,21 @@ public class RollingDiceState implements State<Direction> {
     }
 
     /**
+     * {@return a copy of the dice. A copy is returned that does not allow the
+     * outside world to change the internal state of the object.
+     */
+    public Dice getDice() {
+        return dice.clone();
+    }
+
+    /**
+     * {@return the position of the dice}
+     */
+    public Position getDicePosition() {
+        return dicePosition;
+    }
+
+    /**
      * {@return whether the puzzle is solved}
      */
     @Override
